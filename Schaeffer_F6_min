@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import division
+import os
+import sys
+from math import sin, sqrt
+
+# Schaeffer F6 function definition
+def carre(z):
+        return z*z
+
+def f_test(x, y):
+        t1 = sin (sqrt(carre(x)+carre(y)))
+        t2 = 1 + 0.001*(carre(x) + carre(y))
+        score = 0.5 + (carre(t1) - 0.5)/carre(t2)
+        return score
+
+# Individuals definition
+
+import random
+from deap import base
+from deap import creator
+from deap import tools
+
+creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+creator.create("Individual", list, fitness=creator.FitnessMin)
+
+toolbox = base.Toolbox()
+
+# Attribute generator
+X_MIN, X_MAX = -100, 100
+Y_MIN, Y_MAX = -100, 100
+
+toolbox.register("attr_x", random.uniform, X_MIN, X_MAX)
+toolbox.register("attr_y", random.uniform, Y_MIN, Y_MAX)
+
+# Structure initializers
+toolbox.register("individual", tools.initCycle, creator.Individual,
+                 (toolbox.attr_x, toolbox.attr_y), n=1)
+toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+
+def eval_min_fonction (individual):
+    return f_test(toolbox.attr_x, toolbox.attr_y)
+
+# Operator registering
+toolbox.register("evaluate", eval_min_fonction)
+toolbox.register("mate", tools.cxTwoPoint)
+toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
+toolbox.register("select", tools.selTournament, tournsize=3)
+
+# Population creation
+def main():
+    pop = toolbox.population(n=100)
+    CXPB, MUTPB, NGEN = 0.5, 0.2, 40
+# Population evaluation
+    fitnesses = list(map(toolbox.evaluate, pop))
+    for ind, fit in zip(pop, fitnesses):
+        ind.fitness.values = fit
+
+# Begin the evolution
+
+    for g in range(NGEN):
+        print("-- Generation %i --" % g)
+        
+        # Select the next generation individuals
+        offspring = toolbox.select(pop, len(pop))
+        # Clone the selected individuals
+        offspring = list(map(toolbox.clone, offspring))
+        
+        # Apply crossover and mutation on the offspring
+        for child1, child2 in zip(offspring[::2], offspring[1::2]):
+            if random.random() < CXPB:
+                toolbox.mate(child1, child2)
+                del child1.fitness.values
+                del child2.fitness.values
+
+        for mutant in offspring:
+            if random.random() < MUTPB:
+                toolbox.mutate(mutant)
+                del mutant.fitness.values
+
+        # Evaluate the individuals with an invalid fitness
+        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        fitnesses = map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit
+
+       # The population is entirely replaced by the offspring
+        pop[:] = offspring
+       
+    print("-- Fin du processus d'optimisation --")
+    
+    best_ind = tools.selBest(pop, 1)[0]
+    print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+
+if __name__ == "__main__":
+    main()
