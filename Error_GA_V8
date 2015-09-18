@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\Anaconda\lib\site-packages\spyderlib\widgets\externalshell\sitecustomize.py", line 682, in runfile
+    execfile(filename, namespace)
+  File "C:\Anaconda\lib\site-packages\spyderlib\widgets\externalshell\sitecustomize.py", line 71, in execfile
+    exec(compile(scripttext, filename, 'exec'), glob, loc)
+  File "C:/Simulation/optimPythonPhase2/GA_deap_Eplus_V8.py", line 130, in <module>
+    main()
+  File "C:/Simulation/optimPythonPhase2/GA_deap_Eplus_V8.py", line 109, in main
+    fitnesses = map(toolbox.evaluate, invalid_ind)
+  File "C:/Simulation/optimPythonPhase2/GA_deap_Eplus_V8.py", line 59, in funcs_obj
+    transpose = ModelEval(*individual).T
+  File "def_functions.py", line 184, in ModelEval
+    SimulationData = pd.read_csv(fsimulresults)
+  File "C:\Anaconda\lib\site-packages\pandas\io\parsers.py", line 465, in parser_f
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Anaconda\lib\site-packages\pandas\io\parsers.py", line 241, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "C:\Anaconda\lib\site-packages\pandas\io\parsers.py", line 557, in __init__
+    self._make_engine(self.engine)
+  File "C:\Anaconda\lib\site-packages\pandas\io\parsers.py", line 694, in _make_engine
+    self._engine = CParserWrapper(self.f, **self.options)
+  File "C:\Anaconda\lib\site-packages\pandas\io\parsers.py", line 1061, in __init__
+    self._reader = _parser.TextReader(src, **kwds)
+  File "pandas\parser.pyx", line 512, in pandas.parser.TextReader.__cinit__ (pandas\parser.c:4804)
+ValueError: No columns to parse from file
