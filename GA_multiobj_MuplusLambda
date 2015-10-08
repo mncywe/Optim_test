@@ -22,7 +22,7 @@ L_fen_MIN, L_fen_MAX = 0.1, 1.0
 H_fen_MIN, H_fen_MAX = 0.1, 1.0
 Zall_MIN, Zall_MAX = 0.1, 1.0
 L_cas_MIN, L_cas_MAX = 0.1, 1.0
-H_cas_MIN, H_cas_MAX = 1.0, 1.0
+H_cas_MIN, H_cas_MAX = 0.1, 1.0
 
 toolbox.register("largeur_fenetre", random.uniform, L_fen_MIN, L_fen_MAX)
 toolbox.register("hauteur_fenetre", random.uniform, H_fen_MIN, H_fen_MAX)
