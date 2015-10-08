@@ -52,7 +52,7 @@ def funcs_obj (individual):
     sum1 = sum(individual)
     sum2 = sum((individual[3], individual[4]))
 
-    return sum2, sum1
+    return sum1, sum2
 
 # Operator registering
 toolbox.register("evaluate", funcs_obj)
